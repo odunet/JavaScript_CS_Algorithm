@@ -1,11 +1,12 @@
 # Basic CS Algorithm
 
 This is a Python implementation for the below listed Search and Sort algorithm:
-* Binary Search
-* Bubble Sort
-* Insertion Sort
-* Binary Tree
-* Heapify Tree
+
+- Binary Search
+- Bubble Sort
+- Insertion Sort
+- Binary Tree
+- Heapify Tree
 
 ## Usage
 
@@ -13,23 +14,34 @@ This is a Python implementation for the below listed Search and Sort algorithm:
 # Binary Search
 python binary_search.py
 
-# Binary Search
+# Bubble sort
 python bubble_sort.py
 
-# Binary Search
+# Insertion Sort
 python insertion_sort.py
 
-# Binary Search
+# Build a binary tree
 python binary_tree.py
 
-# Binary Search
-python heapify_tree.py
+# Quick sort
+python quickSort.py
+
+# Merge sort
+python mergeSort.py
+
+# Implement Hash table - Chaining
+python hashTable.py
 ```
 
 ## Output
+
 The output is displayed using Python's standard IO and displayed in the command line. The results of the search could also be used outside each module by importing the module and calling function
 
 ```python
+"""
+Sample Codes
+"""
+
 # import module, e.g. bubble sort
 from bubble_sort import bubble_sort
 a = [3,2,1,5,4,6,7,10,11,17,16,15]
@@ -40,7 +52,7 @@ print( bubble_sort(a) )
 from binary_search import binary_search
 #Initialize variable
 lst = [3,2,1,4,5,6,7,10,11,14,16,17,19,20,23,25,28,30]
-missing_num = 19    
+missing_num = 19
 #Call function
 print( binary_search(lst,missing_num) )
 '
@@ -54,15 +66,18 @@ from heapify tree import heap
 tree1 = binaryT(s)
 print("The un-ordered Binary Tree is: {}".format(tree1))
 #Call the function to Heapify the Binary Tree
-HeapifiedTree = heap(tree1)  
+HeapifiedTree = heap(tree1)
 print("The ordered Binary Tree is: {}".format(HeapifiedTree))
 ```
+
 ```python
 #Sample CLI output of heapify_tree.py
 ```
+
 ![consoleOutput](img/algo_output.PNG)
 
 ## License
+
 MIT License
 
 Copyright (c) [2021] [Ayo Odu]
