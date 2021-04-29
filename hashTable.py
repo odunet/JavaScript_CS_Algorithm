@@ -14,7 +14,7 @@ class HashTable:
         return rep
 
     # Insert data into hash
-    def insert(self, key, value):
+    def __setitem__(self, key, value):
         index = hash(key) % self.length
         if not self.table[index]:
             self.table[index] = [(key, value)]
@@ -31,7 +31,7 @@ class HashTable:
         return self.table
 
     # Serach data in table
-    def Search(self, key):
+    def __getitem__(self, key):
         index = hash(key) % self.length
         if not self.table[index]:
             try:
@@ -80,22 +80,20 @@ class HashTable:
 
 if __name__ == "__main__":
     badoo = HashTable(10)
-    badoo.insert("DeleGiwa", 1)
-    badoo.insert("DeleGiwa1", 2)
-    badoo.insert("DeleGiwa2", 3)
-    badoo.insert("DeleGiwa3", 4)
-    badoo.insert("DeleGiwa4", 5)
-    badoo.insert("DeleGiwa5", 6)
-    badoo.insert("DeleGiwa6", 7)
-    badoo.insert("DeleGiwa7", 8)
-    badoo.insert("DeleGiwa8", 9)
-    badoo.insert("DeleGiwa9", 10)
-    badoo.insert("DeleGiwa10", 11)
-    badoo.insert("DeleGiwa11", 12)
-    badoo.insert("DeleGiwa12", 13)
+    badoo["DeleGiwa"] = 1
+    badoo["DeleGiwa2"] = 3
+    badoo["DeleGiwa1"] = 2
+    badoo["DeleGiwa3"] = 4
+    badoo["DeleGiwa4"] = 5
+    badoo["DeleGiwa5"] = 6
+    badoo["DeleGiwa6"] = 7
+    badoo["DeleGiwa7"] = 8
+    badoo["DeleGiwa8"] = 9
+    badoo["DeleGiwa9"] = 10
+    badoo["DeleGiwa10"] = 11
+    badoo["DeleGiwa11"] = 12
+    badoo["DeleGiwa12"] = 13
 
     print(badoo)
-    print(badoo.Search("DeleGiwa8"))
     print(badoo.delete("DeleGiwa8"))
-    print(badoo)
-    print(badoo.Search("DeleGiwa8"))
+    print(badoo["DeleGiwa9"])
