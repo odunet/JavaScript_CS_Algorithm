@@ -31,6 +31,9 @@ python mergeSort.py
 
 # Implement Hash table - Chaining
 python hashTable.py
+
+# Implement Tries
+python triesDatastructure.py
 ```
 
 ## Output
