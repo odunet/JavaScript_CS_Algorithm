@@ -25,7 +25,7 @@ class Tries:
         For example, below is a dictionary sructure containing one word entry, i.e.
         "ayokunle". The preceeding keys i.e. 97 - 101 are the ASCII values of the letters.
         {'97': {'121': {'111': {'107': {'117': {'110': {'108': {'101': {'ayokunle': 'ayokunle'}}}}}
-    autocomplete : dictionary (User defined)
+    autocomplete : bool (User defined, default = False)
         a bool value that tells the class if the Trie will be used for autocomplete. Tries used for
         autocomplete, are strict because they require the following:
         1) Key and value must equal each other and they must be strings.
