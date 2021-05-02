@@ -3,34 +3,171 @@ class TriesError(Exception):
     """Base class for other exceptions"""
 
     def __init__(self, msg='Kindly review datastructure documentation', *args, **kwargs):
+        """
+        """
         super().__init__(msg, *args, **kwargs)
         self.keyError = "ERROR Tries: The Key: " + \
             str(msg) + ", is not stored in the Tries!"
+        self.dictError = "ERROR Tries: The Tries table is" + \
+            " empty"
 
 
 class Tries:
-    def __init__(self, length):
-        self.length = length
+    """
+    A class used to represent a Trie data structure
+
+    ...
+
+    Attributes
+    ----------
+    table : dictionary (Not user defined)
+        a dictionary containing key, value pairs with entries in a tries structure
+        For example, below is a dictionary sructure containing one word entry, i.e.
+        "ayokunle". The preceeding keys i.e. 97 - 101 are the ASCII values of the letters.
+        {'97': {'121': {'111': {'107': {'117': {'110': {'108': {'101': {'ayokunle': 'ayokunle'}}}}}
+    autocomplete : dictionary (User defined)
+        a bool value that tells the class if the Trie will be used for autocomplete. Tries used for
+        autocomplete, are strict because they require the following:
+        1) Key and value must equal each other and they must be strings.
+
+
+    Methods
+    -------
+    get_dictList(dictionary = {})
+            Parameters
+            ----------
+            dictionary : dictionary
+                A dictionary object (default is
+                {})
+
+
+            Returns
+            -------
+            list
+                a list of strings used that are the disctionary keys.
+
+    raise_error(key = None)
+            Parameters
+            ----------
+            key : str
+                A dictionary key (default is
+                None)
+
+
+            Returns
+            -------
+            Exeption
+                a strings showing the exeption and key involved.
+
+    autoRecursion(dictionary = {}, result)
+            Parameters
+            ----------
+            dictionary : dictionary
+                A dictionary object (default is
+                {})
+           result : list
+                An empty list object that takes the result
+
+            Returns
+            -------
+            list
+                a list of strings showing the text completion suggestion
+
+    __setitem__(key = None, value = None)
+            Parameters
+            ----------
+            key : N/A (Value must be string if Tries is used for autocomplete)
+                A key for value stored in the Trie
+            value : N/A (Value must be string if Tries is used for autocomplete)
+                A value stored in the Trie
+
+            Returns
+            -------
+            dictionary
+                a dictionary containing key, value pairs with entries in a tries structure
+                For example, below is a dictionary sructure containing one word entry, i.e.
+                "ayokunle". The preceeding keys i.e. 97 - 101 are the ASCII values of the letters.
+                {'97': {'121': {'111': {'107': {'117': {'110': {'108': {'101': {'ayokunle': 'ayokunle'}}}}}
+
+    __getitem__(key = None)
+            Parameters
+            ----------
+            key : N/A (Value must be previously string if Tries)
+                A key for value stored in the Trie
+
+            Returns
+            -------
+            dictionary
+                a dictionary containing key, value pairs with entries in a tries structure
+                For example, below is a dictionary sructure containing one word entry, i.e.
+                "ayokunle". The preceeding keys i.e. 97 - 101 are the ASCII values of the letters.
+                {'97': {'121': {'111': {'107': {'117': {'110': {'108': {'101': {'ayokunle': 'ayokunle'}}}}}
+
+    autosearch(key = None)
+            Parameters
+            ----------
+            key : N/A (Value must be previously string if Tries)
+                A key for value stored in the Trie
+
+            Returns
+            -------
+            tuple
+                a boolean and a list. The list contains strings of predicted autocomplete items e.g.:
+                (True, ['oluwatosin', 'oluwaseun', 'oluwasegun', 'oluwakemi', 'olumide', 'olufunso',
+                'olufemi', 'oluremi', 'olushola'])
+    """
+
+    def __init__(self, autocomplete=False):
         self.table = {}
+        if type(autocomplete) != bool:
+            self.autocomplete = False
+        else:
+            self.autocomplete = autocomplete
 
     def __repr__(self):
         rep = "The Tries is: " + str(self.table)
         return rep
 
-    def get_dictList(self, dictionary):
+    def get_dictList(self, dictionary={}):
         if not dictionary:
             return False
         else:
             lst = list(dictionary.keys())
             return lst
 
-    def raise_key_error(self, key):
+    def raise_error(self, key=None):
         try:
             raise TriesError(str(key))
         except TriesError as e:
-            print(e.keyError)
+            if key == None:
+                print(e.dictError)
+            else:
+                print(e.keyError)
 
-    def __setitem__(self, key, value):
+    def autoRecursion(self, dictionary, result):
+        if not dictionary:
+            return
+        arr = self.get_dictList(dictionary)
+        counter = 0
+        for k in dictionary:
+            if ord(arr[counter][0]) >= 97 and ord(arr[counter][0]) <= 122:
+                result.append(dictionary[k])
+                self.autoRecursion({}, result)
+            else:
+                self.autoRecursion(dictionary[k], result)
+            counter += 1
+
+    def __setitem__(self, key=None, value=None):
+        if key == None or value == None:
+            return "Error Key: " + str(key) + " or Value: " + str(value) + " not acceptable."
+
+        # # Statement below evaluates if Trie willl be used for auto-complete
+        if (self.autocomplete):
+            if key != value or type(key) != str:
+                print("Error Key: " + str(key) + " or Value: " +
+                      str(value) + " not acceptable.")
+                return
+
         tempDictA = self.table
         counter = 0
 
@@ -80,6 +217,12 @@ class Tries:
         return self.table
 
     def __getitem__(self, key):
+        if key == None:
+            return "Error Key: " + str(key) + " not acceptable."
+        if not self.table:
+            self.raise_error()
+            return
+
         tempDictA = self.table
         counter = 0
 
@@ -88,7 +231,7 @@ class Tries:
             tempAscii = ord(i)
             # Evaluates if first letter of key is not in first node level
             if str(tempAscii) not in self.get_dictList(tempDictA) and counter == 1:
-                self.raise_key_error(key)
+                self.raise_error(key)
             # Evaluates if first letter of key is in first node level
             elif counter == 1:
                 if len(key) == 1:
@@ -104,7 +247,7 @@ class Tries:
 
                     if j == len(key) - 2:  # Evaluate if this is the last key
                         if str(tempAscii) not in self.get_dictList(tempDictB):
-                            self.raise_key_error(key)
+                            self.raise_error(key)
 
                         else:
                             return tempDictB[str(tempAscii)][key]
@@ -112,14 +255,47 @@ class Tries:
                 # Evaluate if this is not the last key
                 if j != len(key) - 2:
                     if str(tempAscii) not in self.get_dictList(tempDictB):
-                        self.raise_key_error(key)
+                        self.raise_error(key)
 
         return self.table
+
+    def autoSearch(self, key):
+        # if key == None:
+        #     return
+        tempDictA = self.table
+        counter = 0
+        autoTuple = []
+
+        for index, i in enumerate(key):
+            counter += 1
+            tempAscii = ord(i)
+            # Evaluates if first letter of key is not in first node level
+            if str(tempAscii) not in self.get_dictList(tempDictA) and counter == 1:
+                self.raise_error(key)
+                return (False, [])
+            # Evaluates if first letter of key is in first node level
+            elif counter == 1:
+                if len(key) == 1:
+                    return (False, [])
+            # Evaluates for all nodes after the first
+            else:
+                tempDictB = {}
+                for j in range(counter - 1):
+                    if j == 0:
+                        tempDictB = tempDictA[str(ord(key[j]))]
+                    else:
+                        tempDictB = tempDictB[str(ord(key[j]))]
+
+                    if j == len(key) - 2:  # Evaluate if this is the last letter in key
+                        self.autoRecursion(
+                            tempDictB[str(tempAscii)], autoTuple)
+
+        return (True, autoTuple)
 
 
 if __name__ == "__main__":
     # Add items into try
-    testObject = Tries(10)
+    testObject = Tries()
     testObject["key"] = 1
     testObject["key"] = 2
     testObject["keyed"] = 3
@@ -128,11 +304,9 @@ if __name__ == "__main__":
     testObject["keyeg"] = 6
     testObject["keyeh"] = 7
     testObject["keyei"] = 8
-    testObject["keyeidd"] = 10
-    testObject["u"] = 9
 
     # Search for item previously added to Tries
-    print(testObject["keyei"])
+    print(testObject["keyeh"])
 
     # Search for item not previously added to Tries
     print(testObject["ku"])
